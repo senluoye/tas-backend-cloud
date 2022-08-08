@@ -1,7 +1,6 @@
 package com.qks.common.po;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.math.BigInteger;
 
@@ -13,6 +12,7 @@ import java.math.BigInteger;
  * @Create 2022-08-05 17:50
  */
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = true)
 public class User extends Model{
     private String loginName;

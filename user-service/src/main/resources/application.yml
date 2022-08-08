@@ -17,6 +17,7 @@ mybatis:
   type-aliases-package: com.qks.common.po
   configuration:
     map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*xml
 logging:
   level:
     com.qks: debug

@@ -2,7 +2,11 @@ package com.qks.common.vo;
 
 import com.qks.common.po.Job;
 import com.qks.common.po.Role;
+import lombok.Builder;
 import lombok.Data;
+
+import java.math.BigInteger;
+import java.util.List;
 
 /**
  * @ClassName Dessert
@@ -12,13 +16,14 @@ import lombok.Data;
  * @Create 2022-08-05 23:46
  */
 @Data
+@Builder
 public class UserInfo {
-    private String id;
+    private Integer id;
     private String loginName;
     private String name;
     private String email;
-    private String phone;
+    private BigInteger phone;
     private String department;
-    private Role[] roles;
+    private List<Role> roles;
     private Job jobs;
 }

@@ -2,15 +2,14 @@ package com.qks.user.controller;
 
 import com.qks.common.exception.ServiceException;
 import com.qks.common.po.User;
+import com.qks.common.po.UserRoleRelations;
 import com.qks.common.utils.JwtUtils;
 import com.qks.common.vo.ResponseVO;
 import com.qks.common.vo.UserInfo;
 import com.qks.user.service.UserService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,7 +35,7 @@ public class UserController {
      * @return
      * @throws ServiceException
      */
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public ResponseVO<Map<String, Object>> userLogin(@RequestBody User user) throws ServiceException {
         return userService.userLogin(user);
     }
@@ -46,20 +45,132 @@ public class UserController {
      * @return
      * @throws ServiceException
      */
-    @RequestMapping("/info")
+    @GetMapping("/info")
     public ResponseVO<UserInfo> userInfo(@RequestHeader("token") String token) throws ServiceException {
         Integer userId = Integer.valueOf(JwtUtils.parser(token).get("userId").toString());
         return userService.userInfo(userId);
     }
 
-    @RequestMapping("/authorize")
-    @RequestMapping("/revoke-authorize")
-    @RequestMapping("/info")
-    @RequestMapping("/info/list")
-    @RequestMapping("/delete-user")
-    @RequestMapping("/add")
-    @RequestMapping("/info/password")
-    @RequestMapping("/all-department")
-    @RequestMapping("/all-job-position-target")
-    @RequestMapping("/all-job-doctor-target")
+    /**
+     * 给予用户角色
+     * @param user
+     * @return
+     * @throws ServiceException
+     */
+    @PostMapping("/authorize")
+    public ResponseVO<Map<String, Object>> addUserRole(@RequestBody UserRoleRelations relations,
+                                                       @RequestHeader("token") String token) throws ServiceException {
+        return userService.addUserRole(relations, token);
+    }
+
+    /**
+     * 移除用户角色
+     * @param relations
+     * @param token
+     * @return
+     * @throws ServiceException
+     */
+    @PostMapping("/revoke-authorize")
+    public ResponseVO<Map<String, Object>> removeUserRole(@RequestBody UserRoleRelations relations,
+                                                          @RequestHeader("token") String token) throws ServiceException {
+        return userService.removeUserRole(relations, token);
+    }
+
+    /**
+     * 修改用户信息
+     * @param token
+     * @param user
+     * @return
+     * @throws ServiceException
+     */
+    @PutMapping("/info")
+    public ResponseVO<Map<String, Object>> modifyUserInfo(@RequestHeader("token") String token,
+                                                          @RequestBody User user) throws ServiceException {
+        return userService.modifyUserInfo(token, user);
+    }
+
+    /**
+     * 获取所有账号
+     * @param token
+     * @param user
+     * @return
+     * @throws ServiceException
+     */
+    @PostMapping("/info/list")
+    public ResponseVO<List<UserInfo>> getAllUserInfo(@RequestHeader("token") String token,
+                                                     @RequestBody User user) throws ServiceException {
+        return userService.getAllUserInfo(token, user);
+    }
+
+    /**
+     * 删除账号
+     * @param token
+     * @param user
+     * @return
+     * @throws ServiceException
+     */
+    @PostMapping("/delete-user")
+    public ResponseVO<Map<String, Object>> deleteUser(@RequestHeader("token") String token,
+                                                     @RequestBody User user) throws ServiceException {
+        return userService.deleteUser(token, user);
+    }
+
+    /**
+     * 增加用户
+     * @param user
+     * @param token
+     * @return
+     * @throws ServiceException
+     */
+    @PostMapping("/add")
+    public ResponseVO<Map<String, Object>> addUser(@RequestBody User user,
+                                                   @RequestHeader("token") String token) throws ServiceException {
+        return userService.addUser(token, user);
+    }
+
+    /**
+     * 一键修改用户密码
+     * @param token
+     * @param user
+     * @return
+     * @throws ServiceException
+     */
+    @PostMapping("/info/password")
+    public ResponseVO<Map<String, Object>> modifyPassword(@RequestHeader("token") String token,
+                                                          @RequestBody User user) throws ServiceException {
+        return userService.modifyPassword(token, user);
+    }
+
+    /**
+     * 获取所有部门
+     * @param token
+     * @return
+     * @throws ServiceException
+     */
+    @GetMapping("/all-department")
+    public ResponseVO<List<String>> getAllDepartment(@RequestHeader("token") String token) throws ServiceException {
+        return userService.getAllDepartment(token);
+    }
+
+    /**
+     * 获取所有岗位类型
+     * @param token
+     * @return
+     * @throws ServiceException
+     */
+    @GetMapping("/all-job-position-target")
+    public ResponseVO<List<String>> getAllJobPositionTarget(@RequestHeader("token") String token) throws ServiceException {
+        return userService.getAllJobPositionTarget(token);
+    }
+
+    /**
+     * 获取所有人员类型
+     * @param token
+     * @return
+     * @throws ServiceException
+     */
+    @GetMapping("/all-job-doctor-target")
+    public ResponseVO<List<String>> getAllJobDoctorTarget(@RequestHeader("token") String token) throws ServiceException {
+        return userService.getAllJobDoctorTarget(token);
+    }
 }

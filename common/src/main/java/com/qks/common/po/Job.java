@@ -1,5 +1,6 @@
 package com.qks.common.po;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,6 +12,7 @@ import lombok.EqualsAndHashCode;
  * @Create 2022-08-05 18:24
  */
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = true)
 public class Job extends Model {
     private Integer Rank;

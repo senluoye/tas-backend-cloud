@@ -1,5 +1,6 @@
 package com.qks.common.po;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Data;
  * @Create 2022-08-05 18:22
  */
 @Data
+@Builder
 public class Role {
     private Integer id;
     private String name;

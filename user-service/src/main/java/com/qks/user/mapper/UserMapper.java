@@ -18,11 +18,11 @@ public interface UserMapper {
     @Select("select * from users where login_name = #{loginName} and password = #{password}")
     User getUserByStatus(String loginName, String password);
 
-    @Select("select * from users where id = #{userId}")
-    User getUserByStatus(Integer userId);
+    @Select("select * from users where id = #{userId} limit 1")
+    User getUserById(Integer userId);
     
     @Select("select * from users where login_name = #{loginName} limit 1")
-    User getUserByStatus(String loginName);
+    User getUserByLoginName(String loginName);
 
     @Select("select * " +
             "from roles " +
@@ -63,7 +63,6 @@ public interface UserMapper {
     @Select("select * from roles where id >= #{roleId}")
     List<Role> getRoles(Integer roleId);
 
-    List<User> getUsersByXML(String loginName, String name);
 
     @Select("select * from user_job_relations where user_id = #{userId}")
     List<UserJobRelations> getUserJob(Integer id);
@@ -81,7 +80,6 @@ public interface UserMapper {
             "(#{loginName}, #{password}, #{name}, #{email}, #{phone}, #{department})")
     Integer addUsers(User user);
 
-    int addUsersXML(User user);
 
     @Select("select distinct department from users")
     List<String> getDepartments();

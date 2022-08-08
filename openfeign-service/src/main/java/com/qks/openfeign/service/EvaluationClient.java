@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
  * @Version v1.0
  * @Create 2022-08-08 15:09
  */
-@FeignClient(value = "userservice", fallback = JobBackImpl.class)
+@FeignClient(value = "evaluationservice", fallback = JobBackImpl.class)
 public interface EvaluationClient {
     @DeleteMapping("/api/evaluation")
     Integer deleteEvaluation(Integer userId);

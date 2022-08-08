@@ -10,6 +10,7 @@ import com.qks.common.vo.UserInfo;
 import com.qks.openfeign.service.EvaluationClient;
 import com.qks.openfeign.service.JobClient;
 import com.qks.user.mapper.UserMapper;
+import com.qks.user.mapper.UserMapperXML;
 import com.qks.user.service.UserService;
 import com.qks.user.utils.UserUtils;
 import org.springframework.stereotype.Service;
@@ -27,19 +28,20 @@ import java.util.*;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserMapper userMapper;
-    private final UserUtils utils;
+    @Resource
+    private UserMapper userMapper;
+
+    @Resource
+    private UserUtils utils;
+
+    @Resource
+    private UserMapperXML userMapperXML;
 
     @Resource
     private EvaluationClient evaluationClient;
 
     @Resource
     private JobClient jobClient;
-
-    public UserServiceImpl(UserMapper userMapper, UserUtils utils) {
-        this.userMapper = userMapper;
-        this.utils = utils;
-    }
 
     @Override
     public ResponseVO<Map<String, Object>> userLogin(User user) throws ServiceException {
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseVO<UserInfo> userInfo(Integer userId) throws ServiceException {
-        User user = userMapper.getUserByStatus(userId);
+        User user = userMapper.getUserById(userId);
         if (user == null) {
             throw new ServiceException("用户信息不存在");
         }
@@ -160,7 +162,7 @@ public class UserServiceImpl implements UserService {
             users = userMapper.getUsers();
         } else {
             User tempDa = User.builder().build();
-            users = userMapper.getUsersByXML(user.getLoginName(), user.getName());
+            users = userMapperXML.getUsersByXML(user.getLoginName(), user.getName());
         }
 
         List<UserInfo> data = new ArrayList<>();
@@ -213,13 +215,13 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("没有权限");
         }
 
-        User t = userMapper.getUserByStatus(user.getLoginName());
+        User t = userMapper.getUserByLoginName(user.getLoginName());
         if (t != null) {
             throw new ServiceException("用户已存在");
         }
 
         user.setPassword(ComputeUtil.encrypt(user.getPassword()));
-        if (userMapper.addUsersXML(user) < 1) {
+        if (userMapperXML.addUsersXML(user) < 1) {
             throw new ServiceException("添加失败");
         }
         UserRoleRelations relations = UserRoleRelations.builder()

@@ -1,5 +1,6 @@
 package com.qks.common.dto.evaluation;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -7,13 +8,12 @@ import lombok.Data;
  * @Description
  * @Author QKS
  * @Version v1.0
- * @Create 2022-08-08 23:35
+ * @Create 2022-08-09 23:00
  */
 @Data
-public class TeacherDTO {
+@Builder
+public class TeacherListDTO {
     private String loginName;
     private String name;
-    private Integer status;
-    private Integer type;
-    private String typeString;
+    private String type;
 }

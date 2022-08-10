@@ -24,5 +24,5 @@ public class TeacherInfo {
     private String userName;
     private Timestamp createAt;
     private String type;
-    private List<Evaluation> evaluations;
+    private List<MyEvaluation> evaluations;
 }

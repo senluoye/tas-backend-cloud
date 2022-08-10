@@ -1,0 +1,26 @@
+package com.qks.common.utils;
+
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+/**
+ * @ClassName Dessert
+ * @Description
+ * @Author QKS
+ * @Version v1.0
+ * @Create 2022-08-09 15:15
+ */
+@Component
+public class CollectionUtils {
+    /**
+     * List去重
+     * @param list
+     * @return
+     */
+    public static List<Integer> RemoveRepByMap(List<Integer> list) {
+        return list.stream().distinct().collect(Collectors.toList());
+    }
+}

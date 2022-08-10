@@ -1,5 +1,6 @@
 package com.qks.common.vo;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
  * @Create 2022-08-08 23:46
  */
 @Data
+@Builder
 public class ExpertTasks {
 
     private Integer id;

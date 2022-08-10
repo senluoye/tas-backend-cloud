@@ -3,11 +3,13 @@ package com.qks.evaluation.controller;
 import com.qks.common.dto.evaluation.DeleteEvaluationDTO;
 import com.qks.common.dto.evaluation.EvaluateDTO;
 import com.qks.common.dto.evaluation.TeacherDTO;
+import com.qks.common.dto.evaluation.TeacherListDTO;
 import com.qks.common.exception.ServiceException;
 import com.qks.common.po.Evaluation;
 import com.qks.common.po.User;
 import com.qks.common.po.UserJobRelations;
 import com.qks.common.vo.AdminTasks;
+import com.qks.common.vo.ExpertTasks;
 import com.qks.common.vo.ResponseVO;
 import com.qks.common.vo.TeacherInfo;
 import com.qks.evaluation.service.EvaluationService;
@@ -54,9 +56,9 @@ public class EvaluationController {
      * @throws ServiceException
      */
     @PostMapping("/experts")
-    public ResponseVO<List<TeacherInfo>> expertAppraisalTask(@RequestHeader("token") String token,
-                                                           @RequestBody User user) throws ServiceException {
-        return evaluationService.expertAppraisalTask(token, user);
+    public ResponseVO<Integer> expertAppraisalTask(@RequestHeader("token") String token,
+                                                           @RequestBody Evaluation evaluation) throws ServiceException {
+        return evaluationService.expertAppraisalTask(token, evaluation);
     }
 
     /**
@@ -79,8 +81,8 @@ public class EvaluationController {
      * @return
      */
     @PostMapping("/teacher-list")
-    public ResponseVO<Map<String, Object>> getTeacherList(@RequestHeader("token") String token,
-                                                          @RequestBody TeacherDTO teacherDTO) {
+    public ResponseVO<List<ExpertTasks>> getTeacherList(@RequestHeader("token") String token,
+                                                        @RequestBody TeacherListDTO teacherDTO) throws ServiceException {
         return evaluationService.getTeacherList(token, teacherDTO);
     }
 
@@ -92,7 +94,7 @@ public class EvaluationController {
      */
     @PostMapping("/teacher-list/admin")
     public ResponseVO<List<AdminTasks>> adminGetTeacherList(@RequestHeader("token") String token,
-                                                            @RequestBody TeacherDTO teacherDTO) {
+                                                            @RequestBody TeacherDTO teacherDTO) throws ServiceException {
         return evaluationService.adminGetTeacherList(token, teacherDTO);
     }
 
@@ -104,7 +106,7 @@ public class EvaluationController {
      */
     @PostMapping("/task")
     public ResponseVO<Map<String, Object>> deleteEvaluation(@RequestHeader("token") String token,
-                                         @RequestBody DeleteEvaluationDTO deleteEvaluationDTO) {
+                                         @RequestBody DeleteEvaluationDTO deleteEvaluationDTO) throws ServiceException {
         return evaluationService.deleteEvaluation(token, deleteEvaluationDTO);
     }
 
@@ -128,7 +130,7 @@ public class EvaluationController {
      */
     @PostMapping("/admin")
     public ResponseVO<Integer> adminAppraisalTask(@RequestHeader("token") String token,
-                                          @RequestBody Evaluation evaluation) {
+                                          @RequestBody Evaluation evaluation) throws ServiceException {
         return evaluationService.adminAppraisalTask(token, evaluation);
     }
 
@@ -139,8 +141,8 @@ public class EvaluationController {
      * @return
      */
     @PostMapping("/info")
-    public ResponseVO<Map<String, Object>> getEvaluationInfo(@RequestHeader("token") String token,
-                                           @RequestBody UserJobRelations relations) {
+    public ResponseVO<List<Evaluation>> getEvaluationInfo(@RequestHeader("token") String token,
+                                           @RequestBody UserJobRelations relations) throws ServiceException {
         return evaluationService.getEvaluationInfo(token, relations);
     }
 }

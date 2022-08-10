@@ -1,10 +1,14 @@
 package com.qks.openfeign.service;
 
+import com.qks.common.po.Evaluation;
 import com.qks.openfeign.service.backimpl.JobBackImpl;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 /**
  * @ClassName Dessert
@@ -17,4 +21,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 public interface EvaluationClient {
     @DeleteMapping("/api/evaluation")
     Integer deleteEvaluation(Integer userId);
+
+    @PostMapping("/api/evaluation/during")
+    List<Evaluation> getDuringEvaluationXML(Integer status);
 }

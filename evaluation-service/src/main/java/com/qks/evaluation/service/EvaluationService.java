@@ -1,18 +1,12 @@
 package com.qks.evaluation.service;
 
-import com.qks.common.dto.evaluation.ApplyDTO;
-import com.qks.common.dto.evaluation.DeleteEvaluationDTO;
-import com.qks.common.dto.evaluation.EvaluateDTO;
-import com.qks.common.dto.evaluation.TeacherDTO;
+import com.qks.common.dto.evaluation.*;
 import com.qks.common.exception.ServiceException;
 import com.qks.common.po.Evaluation;
 import com.qks.common.po.User;
 import com.qks.common.po.UserJobRelations;
 import com.qks.common.po.UserRoleRelations;
-import com.qks.common.vo.AdminTasks;
-import com.qks.common.vo.ResponseVO;
-import com.qks.common.vo.TeacherInfo;
-import com.qks.common.vo.UserInfo;
+import com.qks.common.vo.*;
 
 import java.util.List;
 import java.util.Map;
@@ -26,21 +20,21 @@ import java.util.Map;
  */
 public interface EvaluationService {
 
-    ResponseVO<List<User>> getEvaluationList(String token, User user);
+    ResponseVO<List<User>> getEvaluationList(String token, User user) throws ServiceException;
 
     ResponseVO<List<TeacherInfo>> getAppliedTeacher(String token, TeacherDTO teacherDTO);
 
-    ResponseVO<Map<String, Object>> assignApplyExpertEvaluation(String token, EvaluateDTO evaluateDTO);
+    ResponseVO<Map<String, Object>> assignApplyExpertEvaluation(String token, EvaluateDTO evaluateDTO) throws ServiceException;
 
-    ResponseVO<List<AdminTasks>> adminGetTeacherList(String token, TeacherDTO teacherDTO);
+    ResponseVO<List<AdminTasks>> adminGetTeacherList(String token, TeacherDTO teacherDTO) throws ServiceException;
 
-    ResponseVO<Map<String, Object>> getTeacherList(String token, TeacherDTO teacherDTO);
+    ResponseVO<List<ExpertTasks>> getTeacherList(String token, TeacherListDTO teacherDTO) throws ServiceException;
 
-    ResponseVO<Map<String, Object>> deleteEvaluation(String token, DeleteEvaluationDTO deleteEvaluationDTO);
+    ResponseVO<Map<String, Object>> deleteEvaluation(String token, DeleteEvaluationDTO deleteEvaluationDTO) throws ServiceException;
 
-    ResponseVO<Integer> adminAppraisalTask(String token, Evaluation evaluation);
+    ResponseVO<Integer> adminAppraisalTask(String token, Evaluation evaluation) throws ServiceException;
 
-    ResponseVO<Map<String, Object>> getEvaluationInfo(String token, UserJobRelations relations);
+    ResponseVO<List<Evaluation>> getEvaluationInfo(String token, UserJobRelations relations) throws ServiceException;
 
-    ResponseVO<List<TeacherInfo>> expertAppraisalTask(String token, User user);
+    ResponseVO<Integer> expertAppraisalTask(String token, Evaluation evaluation) throws ServiceException;
 }

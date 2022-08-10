@@ -22,7 +22,7 @@ public interface EvaluationService {
 
     ResponseVO<List<User>> getEvaluationList(String token, User user) throws ServiceException;
 
-    ResponseVO<List<TeacherInfo>> getAppliedTeacher(String token, TeacherDTO teacherDTO);
+    ResponseVO<List<TeacherInfo>> getAppliedTeacher(String token, TeacherDTO teacherDTO) throws ServiceException;
 
     ResponseVO<Map<String, Object>> assignApplyExpertEvaluation(String token, EvaluateDTO evaluateDTO) throws ServiceException;
 

@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,13 +57,17 @@ public class EvaluationServiceImpl implements EvaluationService {
         String name = user.getName();
         String department = user.getDepartment();
 
-        List<User> expertList = userClient.getExpertListXML();
+        List<User> expertList = userClient.getExpertListXML(name, department).getData();
         return Response.success(expertList);
     }
 
     @Override
-    public ResponseVO<List<TeacherInfo>> getAppliedTeacher(String token, TeacherDTO teacherDTO) {
+    public ResponseVO<List<TeacherInfo>> getAppliedTeacher(String token, TeacherDTO teacherDTO) throws ServiceException {
         Integer userId = Integer.valueOf(JwtUtils.parser(token).get("userId").toString());
+        if (!userClient.isAdminOrLeadership(userId).getData()) {
+            throw new ServiceException("没有权限");
+        }
+
         List<TeacherInfo> data = new ArrayList<>();
         List<UserJobRelationVO> relations = jobClient.getUserJobXML(teacherDTO.getTypeString());
         for (UserJobRelationVO relation : relations) {
@@ -171,12 +174,12 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new ServiceException("请确认数据");
         }
 
-        Integer[] ayylys = EvaluationUtil.getApplyLis(teacherDTO.getStatus(), teacherDTO.getType());
+        Integer[] apply = EvaluationUtil.getApplyLis(teacherDTO.getStatus(), teacherDTO.getType());
         List<User> users = userClient.getUserXML(teacherDTO.getLoginName(), teacherDTO.getName()).getData();
         List<AdminTasks> data = new ArrayList<>();
 
         for (User user : users) {
-            List<UserJobRelations> relations = jobClient.getUserJobs(user.getId(), ayylys).getData();
+            List<UserJobRelations> relations = jobClient.getUserJobs(user.getId(), apply).getData();
             for (UserJobRelations relation : relations) {
                 if (relation.getId() == 0) {
                     continue;
@@ -309,15 +312,15 @@ public class EvaluationServiceImpl implements EvaluationService {
             throw new ServiceException("数据不存在");
         }
 
-        Integer resAbsStatus = Math.abs(evaluation.getStatus());
-        Integer userJobAbsStatus = Math.abs(relation.getStatus());
+        int resAbsStatus = Math.abs(evaluation.getStatus());
+        int userJobAbsStatus = Math.abs(relation.getStatus());
 
-        List<Evaluation> allEvaluation;
+//        List<Evaluation> allEvaluation;
         if (relation.getStatus() == 2 || userJobAbsStatus == 3) {
             if (resAbsStatus != 3) {
                 throw new ServiceException("请重新确认数据");
             }
-            allEvaluation = evaluationMapper.getFirstDuringEvaluationXML(relation.getId());
+//            allEvaluation = evaluationMapper.getFirstDuringEvaluationXML(relation.getId());
             if (evaluationMapper.updateStatus(evaluation.getStatus(), relation.getId()) < 1) {
                 throw new ServiceException("修改失败");
             }
@@ -325,7 +328,7 @@ public class EvaluationServiceImpl implements EvaluationService {
                 throw new ServiceException("修改失败");
             }
         } else if (relation.getStatus() == 12 || userJobAbsStatus == 13) {
-            allEvaluation = evaluationMapper.getSecondDuringEvaluationXML(relation.getId());
+//            allEvaluation = evaluationMapper.getSecondDuringEvaluationXML(relation.getId());
             if (resAbsStatus != 13) {
                 throw new ServiceException("请重新确认数据");
             }
@@ -390,18 +393,18 @@ public class EvaluationServiceImpl implements EvaluationService {
         }
 
 
-        Integer absStatus = Math.abs(relation.getStatus());
-        if (!absStatus <= 2 && !(absStatus > 10 && absStatus <= 12)) {
+        int absStatus = Math.abs(relation.getStatus());
+        if (!(absStatus <= 2) && !(absStatus > 10 && absStatus <= 12)) {
             throw new ServiceException("没有权限");
         }
 
-        if (evaluation.getExpertId() != userId) {
+        if (!evaluation.getExpertId().equals(userId)) {
             throw new ServiceException("没有权限");
         }
 
         Integer status = evaluation.getStatus();
-        Integer resAbsStatus = Math.abs(status);
-        Integer evaAbsStatus = Math.abs(preEvaluation.getStatus());
+        int resAbsStatus = Math.abs(status);
+        int evaAbsStatus = Math.abs(preEvaluation.getStatus());
         if (resAbsStatus != 2 && resAbsStatus != 12) {
             throw new ServiceException("请重新确认数据");
         } else {

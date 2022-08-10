@@ -6,6 +6,8 @@ import com.qks.openfeign.service.backimpl.JobBackImpl;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 
 import java.util.List;
 
@@ -22,8 +24,9 @@ public interface UserClient {
     @PostMapping("/api/user/check")
     ResponseVO<Boolean> isAdminOrLeadership(Integer userId);
 
-    @GetMapping("/api/user/experts")
-    List<User> getExpertListXML();
+    @PostMapping("/api/user/experts")
+    ResponseVO<List<User>> getExpertListXML(@RequestParam("name") String name,
+                                            @RequestParam("department") String department);
 
     @PostMapping("/api/user")
     ResponseVO<User> getUser(Integer userId);
@@ -35,5 +38,6 @@ public interface UserClient {
     ResponseVO<Boolean> isExpert(Integer integer);
 
     @PostMapping("/api/user/check/teacher/xml")
-    ResponseVO<List<User>> getUserXML(String loginName, String name);
+    ResponseVO<List<User>> getUserXML(@RequestParam("loginName") String loginName,
+                                      @RequestParam("name") String name);
 }

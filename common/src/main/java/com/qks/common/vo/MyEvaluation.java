@@ -1,6 +1,7 @@
 package com.qks.common.vo;
 
 import com.qks.common.po.Evaluation;
+import com.qks.common.po.Model;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +15,10 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Builder
-@EqualsAndHashCode(callSuper = true)
-public class MyEvaluation extends Evaluation {
+public class MyEvaluation extends Model {
+    private Integer userJobRelationsId;
+    private Integer expertId;
+    private String comment;
+    private Integer status;
     private String expertName;
 }

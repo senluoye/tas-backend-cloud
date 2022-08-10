@@ -51,7 +51,7 @@ public class EvaluationController {
     /**
      * 专家评审
      * @param token
-     * @param user
+     * @param evaluation
      * @return
      * @throws ServiceException
      */
@@ -104,7 +104,7 @@ public class EvaluationController {
      * @param deleteEvaluationDTO
      * @return
      */
-    @PostMapping("/task")
+    @DeleteMapping("/task")
     public ResponseVO<Map<String, Object>> deleteEvaluation(@RequestHeader("token") String token,
                                          @RequestBody DeleteEvaluationDTO deleteEvaluationDTO) throws ServiceException {
         return evaluationService.deleteEvaluation(token, deleteEvaluationDTO);
@@ -118,7 +118,7 @@ public class EvaluationController {
      */
     @PostMapping("/teachers")
     public ResponseVO<List<TeacherInfo>> getAppliedTeacher(@RequestHeader("token") String token,
-                                                        @RequestBody TeacherDTO teacherDTO) {
+                                                        @RequestBody TeacherDTO teacherDTO) throws ServiceException {
         return evaluationService.getAppliedTeacher(token, teacherDTO);
     }
 

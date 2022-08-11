@@ -5,7 +5,6 @@ import com.qks.common.exception.ServiceException;
 import com.qks.common.po.Evaluation;
 import com.qks.common.po.User;
 import com.qks.common.po.UserJobRelations;
-import com.qks.common.po.UserRoleRelations;
 import com.qks.common.vo.*;
 
 import java.util.List;

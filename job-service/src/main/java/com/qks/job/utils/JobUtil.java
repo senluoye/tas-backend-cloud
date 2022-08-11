@@ -1,8 +1,8 @@
-package com.qks.evaluation.utils;
+package com.qks.job.utils;
 
 import com.qks.common.po.Evaluation;
 import com.qks.common.po.UserJobRelations;
-import com.qks.evaluation.mapper.EvaluationMapper;
+import com.qks.job.mapper.JobMapper;
 import com.qks.openfeign.service.JobClient;
 import org.springframework.stereotype.Component;
 
@@ -17,13 +17,13 @@ import java.util.List;
  * @Create 2022-08-09 18:21
  */
 @Component
-public class EvaluationUtil {
+public class JobUtil {
 
     @Resource
     private JobClient jobClient;
 
     @Resource
-    private EvaluationMapper evaluationMapper;
+    private JobMapper evaluationMapper;
 
     public Boolean IsAllExpertAgree(UserJobRelations relations) {
         int absStatus = Math.abs(relations.getStatus());

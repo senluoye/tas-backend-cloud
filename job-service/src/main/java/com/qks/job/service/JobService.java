@@ -19,19 +19,19 @@ public interface JobService {
 
     ResponseVO<Job> createJob(String token, Job job) throws ServiceException;
 
-    ResponseVO<Integer> deleteJob(String token, Integer id);
+    ResponseVO<Integer> deleteJob(String token, Integer id) throws ServiceException;
 
     ResponseVO<List<Job>> getJobList(String token, Map<String, String> queryMap);
 
-    ResponseVO<Map<String, Object>> modifyJobInfo(String token, Job job);
+    ResponseVO<Map<String, Object>> modifyJobInfo(String token, Job job) throws ServiceException;
 
-    ResponseVO<Map<String, Object>> applyJob(String token, UserJobRelations relations);
+    ResponseVO<Map<String, Object>> applyJob(String token, UserJobRelations relations) throws ServiceException;
 
     ResponseVO<List<JobNameNode>> selectJobNameNode(Integer id);
 
-    ResponseVO<SelfJobVO> getSelfJob(String token, Integer status);
+    ResponseVO<List<SelfJobVO>> getSelfJob(String token, Integer status) throws ServiceException;
 
-    ResponseVO<Map<String, Object>> updateProgress(String token, UserJobRelations relations);
+    ResponseVO<Map<String, Object>> updateProgress(String token, UserJobRelations relations) throws ServiceException;
 
-    ResponseVO<Job> copyJob(String token, Integer id);
+    ResponseVO<Job> copyJob(String token, Integer id) throws ServiceException;
 }

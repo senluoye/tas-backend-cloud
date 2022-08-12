@@ -16,11 +16,11 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @Create 2022-08-08 19:29
  */
 @EnableFeignClients(basePackages = "com.qks.openfeign", defaultConfiguration = DefaultFeignConfiguration.class)
-@RibbonClient(name = "evaluationservice", configuration = MyRulerConfig.class)
+@RibbonClient(name = "jobservice", configuration = MyRulerConfig.class)
 @EnableDiscoveryClient
 @SpringBootApplication
-public class EvaluationApplication {
+public class JobApplication {
     public static void main(String[] args) {
-        SpringApplication.run(EvaluationApplication.class, args);
+        SpringApplication.run(JobApplication.class, args);
     }
 }

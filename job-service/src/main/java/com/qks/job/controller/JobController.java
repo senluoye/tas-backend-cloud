@@ -41,7 +41,7 @@ public class JobController {
      */
     @PostMapping("/create")
     public ResponseVO<Job> createJob(@RequestHeader("token") String token,
-                                  @RequestBody Job job) {
+                                  @RequestBody Job job) throws ServiceException {
         return jobService.createJob(token, job);
     }
 
@@ -53,7 +53,7 @@ public class JobController {
      */
     @PostMapping("/delete")
     public ResponseVO<Integer> deleteJob(@RequestHeader("token") String token,
-                                  @RequestBody Integer id) {
+                                  @RequestBody Integer id) throws ServiceException {
         return jobService.deleteJob(token, id);
     }
 
@@ -99,7 +99,7 @@ public class JobController {
      * @return
      */
     @PutMapping("/info")
-    public ResponseVO<Map<String, Object>> modifyJobInfo(@RequestHeader("token") String token, @RequestBody Job job) {
+    public ResponseVO<Map<String, Object>> modifyJobInfo(@RequestHeader("token") String token, @RequestBody Job job) throws ServiceException {
         return jobService.modifyJobInfo(token, job);
     }
 
@@ -110,7 +110,7 @@ public class JobController {
      * @return
      */
     @PostMapping("/apply")
-    public ResponseVO<Map<String, Object>> applyJob(@RequestHeader("token") String token, @RequestBody UserJobRelations relations) {
+    public ResponseVO<Map<String, Object>> applyJob(@RequestHeader("token") String token, @RequestBody UserJobRelations relations) throws ServiceException {
         return jobService.applyJob(token, relations);
     }
 
@@ -120,8 +120,8 @@ public class JobController {
      * @return
      */
     @GetMapping("/get-select-job-name-node-list")
-    public ResponseVO<List<JobNameNode>> selectJobNameNode(@RequestParam("id") Integer id) {
-        return jobService.selectJobNameNode(id);
+    public ResponseVO<List<JobNameNode>> selectJobNameNode(@RequestParam("id") String id) {
+        return jobService.selectJobNameNode(Integer.parseInt(id));
     }
 
     /**
@@ -131,9 +131,12 @@ public class JobController {
      * @return
      */
     @GetMapping("/self")
-    public ResponseVO<SelfJobVO> getSelfJob(@RequestHeader("token") String token,
-                                            @RequestParam("status") Integer status) {
-        return jobService.getSelfJob(token, status);
+    public ResponseVO<List<SelfJobVO>> getSelfJob(@RequestHeader("token") String token,
+                                            @RequestParam("status") String status) throws ServiceException {
+        if ("".equals(status)) {
+            return jobService.getSelfJob(token, 0x3f3f3f3f);
+        }
+        return jobService.getSelfJob(token, Integer.parseInt(status));
     }
 
     /**
@@ -144,7 +147,7 @@ public class JobController {
      */
     @PutMapping("/update-progress")
     public ResponseVO<Map<String, Object>> updateProgress(@RequestHeader("token") String token,
-                                       @RequestBody UserJobRelations relations) {
+                                       @RequestBody UserJobRelations relations) throws ServiceException {
         return jobService.updateProgress(token, relations);
     }
 
@@ -156,7 +159,7 @@ public class JobController {
      */
     @PostMapping("/copy")
     public ResponseVO<Job> copyJob(@RequestHeader("token") String token,
-                                @RequestBody Integer id) {
+                                @RequestBody Integer id) throws ServiceException {
         return jobService.copyJob(token, id);
     }
 }

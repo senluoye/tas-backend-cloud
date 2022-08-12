@@ -1,6 +1,7 @@
 package com.qks.common.vo;
 
 import com.qks.common.po.Job;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Data;
  * @Create 2022-08-11 14:44
  */
 @Data
+@Builder
 public class SelfJobVO {
     private Integer relationId;
     private Job job;

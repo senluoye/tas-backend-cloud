@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 /**
  * @ClassName Dessert
  * @Description
@@ -17,6 +19,6 @@ import lombok.EqualsAndHashCode;
 public class Task extends Model{
     private String name;
     private String description;
-    private Task[] subTasks;
+    private List<Task> subTasks;
     private User[] ownUsers;
 }

@@ -25,5 +25,5 @@ public class UserInfo {
     private BigInteger phone;
     private String department;
     private List<Role> roles;
-    private Job jobs;
+    private List<Job> jobs;
 }

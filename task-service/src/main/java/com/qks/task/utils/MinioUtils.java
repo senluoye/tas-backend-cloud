@@ -1,6 +1,7 @@
 package com.qks.task.utils;
 
 import io.minio.*;
+import io.minio.errors.*;
 import io.minio.messages.DeleteError;
 import io.minio.messages.DeleteObject;
 import io.minio.messages.Item;
@@ -15,11 +16,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URLEncoder;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,15 +33,16 @@ import java.util.stream.Collectors;
  * @Create 2022-08-12 20:08
  */
 @Component
-public class MinioUtilS {
+public class MinioUtils {
     @Resource
     private MinioClient minioClient;
 
     @Value("${minio.bucketName}")
     private String bucketName;
+
     /**
-     * description: 判断bucket是否存在，不存在则创建
-     * @return void
+     * 判断bucket是否存在，不存在则创建
+     * @param name
      */
     public void existBucket(String name) {
         try {
@@ -87,11 +88,11 @@ public class MinioUtilS {
         }
         return true;
     }
+
     /**
      * description: 上传文件
-     *
      * @param multipartFile
-     * @return: java.lang.String
+     * @return java.lang.String
 
      */
     public List<String> upload(MultipartFile[] multipartFile) {
@@ -132,9 +133,8 @@ public class MinioUtilS {
 
     /**
      * description: 下载文件
-     *
      * @param fileName
-     * @return: org.springframework.http.ResponseEntity<byte [ ]>
+     * @return org.springframework.http.ResponseEntity<byte []>
      */
     public ResponseEntity<byte[]> download(String fileName) {
         ResponseEntity<byte[]> responseEntity = null;
@@ -208,14 +208,34 @@ public class MinioUtilS {
      */
     public Iterable<Result<DeleteError>> removeObjects(String bucketName, List<String> objects) {
         List<DeleteObject> dos = objects.stream().map(DeleteObject::new).collect(Collectors.toList());
-        Iterable<Result<DeleteError>> results = minioClient.removeObjects(RemoveObjectsArgs.builder().bucket(bucketName).objects(dos).build());
-        return results;
+        return minioClient.removeObjects(RemoveObjectsArgs.builder().bucket(bucketName).objects(dos).build());
     }
 
     @Data
-    public class ObjectItem {
+    public static class ObjectItem {
         private String objectName;
         private Long size;
+    }
+
+    public void upload(String fileName, MultipartFile file) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        InputStream in = file.getInputStream();
+        minioClient.putObject(PutObjectArgs.builder()
+                .bucket(bucketName)
+                .object(fileName)
+                .stream(in, in.available(), -1)
+                .contentType(file.getContentType())
+                .build());
+        in.close();
+    }
+
+    public byte[] getFile(String fileName) throws IOException, ServerException, InsufficientDataException, ErrorResponseException, NoSuchAlgorithmException, InvalidKeyException, InvalidResponseException, XmlParserException, InternalException {
+        InputStream in = minioClient.getObject(GetObjectArgs.builder()
+                .bucket(bucketName)
+                .object(fileName)
+                .build());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        IOUtils.copy(in, out);
+        return out.toByteArray();
     }
 
 }

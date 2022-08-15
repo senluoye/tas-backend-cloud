@@ -2,6 +2,7 @@ package com.qks.common.po;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ClassName Dessert
@@ -12,6 +13,7 @@ import lombok.Data;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class JobNameNode extends Model{
     private String name;
     private Integer parentId;

@@ -15,6 +15,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class MyEvaluation extends Model {
     private Integer userJobRelationsId;
     private Integer expertId;

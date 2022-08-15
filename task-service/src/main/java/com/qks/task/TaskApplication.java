@@ -16,7 +16,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @Create 2022-08-08 19:29
  */
 @EnableFeignClients(basePackages = "com.qks.openfeign", defaultConfiguration = DefaultFeignConfiguration.class)
-@RibbonClient(name = "jobservice", configuration = MyRulerConfig.class)
+@RibbonClient(name = "taskservice", configuration = MyRulerConfig.class)
 @EnableDiscoveryClient
 @SpringBootApplication
 public class TaskApplication {

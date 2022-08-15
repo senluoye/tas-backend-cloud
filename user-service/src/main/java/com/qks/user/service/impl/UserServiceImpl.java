@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         if ("".equals(loginName) || "".equals(password)) {
             throw new ServiceException("用户名或密码不能为空");
         }
-        User userData = userMapper.getUserByStatus(loginName, password);
+        UserDTO userData = userMapper.getUserByStatus(loginName, password);
         if (userData == null || userData.getId() == 0) {
             throw new ServiceException("用户名或密码错误");
         }
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
         Integer userId = Integer.valueOf(JwtUtils.parser(token).get("userId").toString());
         String loginName = user.getLoginName();
         String password = ComputeUtil.decrypt(user.getPassword());
-        User targetUser = userMapper.getUserByStatus(loginName, password);
+        UserDTO targetUser = userMapper.getUserByStatus(loginName, password);
 
         if (!targetUser.getId().equals(userId)) {
             UserRoleRelations currentUserRole = userMapper.getUserRole(userId);
@@ -272,6 +272,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseVO<List<String>> getAllJobDoctorTarget(String token) {
         return jobClient.getAllJobDoctorTarget();
+    }
+
+    @Override
+    public ResponseVO<Integer> userRegister(UserDTO userDTO) throws ServiceException {
+        String loginName = userDTO.getLoginName();
+        String password = ComputeUtil.encrypt(userDTO.getPassword());
+        if ("".equals(loginName) || "".equals(password)) {
+            throw new ServiceException("用户名或密码不能为空");
+        }
+        UserDTO t = userMapper.getUserByStatus(loginName, password);
+        if (t != null) {
+            throw new ServiceException("用户名已存在");
+        }
+
+        userDTO.setPassword(ComputeUtil.encrypt(userDTO.getPassword()));
+        if (userMapper.addUser(userDTO) < 1) {
+            throw new ServiceException("注册失败");
+        }
+        return Response.success(userDTO.getId());
     }
 
     public ResponseVO<Boolean> IsAdminOrLeadership(Integer userId) {

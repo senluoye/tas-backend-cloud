@@ -41,4 +41,6 @@ public interface UserService {
     ResponseVO<List<String>> getAllJobPositionTarget(String token);
 
     ResponseVO<List<String>> getAllJobDoctorTarget(String token);
+
+    ResponseVO<Integer> userRegister(UserDTO user) throws ServiceException;
 }

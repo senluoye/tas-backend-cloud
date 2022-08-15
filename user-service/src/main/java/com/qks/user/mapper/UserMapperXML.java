@@ -17,4 +17,5 @@ public interface UserMapperXML {
     int addUsersXML(User user);
 
     List<User> getUsersByXML(String loginName, String name);
+
 }

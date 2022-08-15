@@ -1,5 +1,6 @@
 package com.qks.user.mapper;
 
+import com.qks.common.dto.user.UserDTO;
 import com.qks.common.po.*;
 import org.apache.ibatis.annotations.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,7 +17,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     @Select("select * from users where login_name = #{loginName} and password = #{password}")
-    User getUserByStatus(String loginName, String password);
+    UserDTO getUserByStatus(@Param("loginName") String loginName, @Param("password") String password);
 
     @Select("select * from users where id = #{userId} limit 1")
     User getUserById(Integer userId);
@@ -86,4 +87,8 @@ public interface UserMapper {
 
     @Update("update users set password = #{password} where login_name = #{loginName}")
     int resetUserPassword(String loginName, String password);
+
+    @Insert("insert into users set login_name = #{loginName}, password = #{password}, " +
+            "name = #{name}, email = #{email}, phone = #{phone}, department = #{department}")
+    int addUser(UserDTO userDTO);
 }

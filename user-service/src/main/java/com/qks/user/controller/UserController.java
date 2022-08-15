@@ -41,6 +41,11 @@ public class UserController {
         return userService.userLogin(user);
     }
 
+    @PostMapping("/register")
+    public ResponseVO<Integer> userRegister(@RequestBody UserDTO user) throws ServiceException {
+        return userService.userRegister(user);
+    }
+
     /**
      * 获取用户信息
      * @return

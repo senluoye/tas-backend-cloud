@@ -1,5 +1,6 @@
 package com.qks.user.controller;
 
+import com.qks.common.dto.user.UserDTO;
 import com.qks.common.exception.ServiceException;
 import com.qks.common.po.User;
 import com.qks.common.po.UserRoleRelations;
@@ -36,7 +37,7 @@ public class UserController {
      * @throws ServiceException
      */
     @PostMapping("/login")
-    public ResponseVO<Map<String, Object>> userLogin(@RequestBody User user) throws ServiceException {
+    public ResponseVO<Map<String, Object>> userLogin(@RequestBody UserDTO user) throws ServiceException {
         return userService.userLogin(user);
     }
 

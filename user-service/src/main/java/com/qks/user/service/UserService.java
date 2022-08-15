@@ -1,5 +1,6 @@
 package com.qks.user.service;
 
+import com.qks.common.dto.user.UserDTO;
 import com.qks.common.exception.ServiceException;
 import com.qks.common.po.User;
 import com.qks.common.po.UserRoleRelations;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @Create 2022-08-05 18:39
  */
 public interface UserService {
-    ResponseVO<Map<String, Object>> userLogin(User user) throws ServiceException;
+    ResponseVO<Map<String, Object>> userLogin(UserDTO user) throws ServiceException;
     ResponseVO<UserInfo> userInfo(Integer userId) throws ServiceException;
 
     ResponseVO<Map<String, Object>> addUserRole(UserRoleRelations relations, String token) throws ServiceException;

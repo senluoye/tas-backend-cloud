@@ -1,5 +1,6 @@
 package com.qks.user.service.impl;
 
+import com.qks.common.dto.user.UserDTO;
 import com.qks.common.exception.ServiceException;
 import com.qks.common.po.*;
 import com.qks.common.utils.ComputeUtil;
@@ -44,9 +45,9 @@ public class UserServiceImpl implements UserService {
     private JobClient jobClient;
 
     @Override
-    public ResponseVO<Map<String, Object>> userLogin(User user) throws ServiceException {
+    public ResponseVO<Map<String, Object>> userLogin(UserDTO user) throws ServiceException {
         String loginName = user.getLoginName();
-        String password = ComputeUtil.decrypt(user.getPassword());
+        String password = ComputeUtil.encrypt(user.getPassword());
         if ("".equals(loginName) || "".equals(password)) {
             throw new ServiceException("用户名或密码不能为空");
         }
@@ -67,7 +68,8 @@ public class UserServiceImpl implements UserService {
 
         List<Role> roles = userMapper.getRolesByStatus(userId);
         UserJobRelations relations = userMapper.getUserJobRelations(userId);
-        Job job = userMapper.getJobByStatus(relations.getJobId());
+        List<Job> jobs = new ArrayList<>();
+        jobs.add(userMapper.getJobByStatus(relations.getJobId()));
 
         return Response.success(UserInfo.builder()
                 .id(user.getId())
@@ -77,7 +79,7 @@ public class UserServiceImpl implements UserService {
                 .phone(user.getPhone())
                 .department(user.getDepartment())
                 .roles(roles)
-                .jobs(job)
+                .jobs(jobs)
                 .build());
     }
 

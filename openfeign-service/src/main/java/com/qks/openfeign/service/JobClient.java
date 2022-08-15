@@ -21,7 +21,7 @@ import java.util.List;
  * @Version v1.0
  * @Create 2022-08-06 00:08
  */
-@FeignClient(value = "jobservice", fallback = JobBackImpl.class)
+@FeignClient(value = "jobservice", fallbackFactory = JobBackImpl.class)
 public interface JobClient {
 
     @GetMapping("/api/jobs")

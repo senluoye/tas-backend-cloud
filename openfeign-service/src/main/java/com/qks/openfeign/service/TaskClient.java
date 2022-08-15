@@ -18,7 +18,7 @@ import java.util.List;
  * @Version v1.0
  * @Create 2022-08-06 00:04
  */
-@FeignClient(value = "taskservice", fallback = JobBackImpl.class)
+@FeignClient(value = "taskservice", fallbackFactory = JobBackImpl.class)
 public interface TaskClient {
 
     @PostMapping("/api/task")

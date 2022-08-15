@@ -18,7 +18,7 @@ import java.util.List;
  * @Version v1.0
  * @Create 2022-08-06 00:04
  */
-@FeignClient(value = "userservice", fallback = JobBackImpl.class)
+@FeignClient(value = "userservice", fallbackFactory = JobBackImpl.class)
 public interface UserClient {
 
     @PostMapping("/api/user/check")

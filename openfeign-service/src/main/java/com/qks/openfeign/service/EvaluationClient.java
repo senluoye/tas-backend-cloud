@@ -21,7 +21,7 @@ import java.util.List;
  * @Version v1.0
  * @Create 2022-08-08 15:09
  */
-@FeignClient(value = "evaluationservice", fallback = JobBackImpl.class)
+@FeignClient(value = "evaluationservice", fallbackFactory = JobBackImpl.class)
 public interface EvaluationClient {
     @DeleteMapping("/api/evaluation")
     Integer deleteEvaluation(Integer userId);

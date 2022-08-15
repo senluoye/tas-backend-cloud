@@ -1,7 +1,15 @@
 package com.qks.openfeign.service.backimpl;
 
+import com.qks.common.po.Job;
+import com.qks.common.po.UserJobRelations;
+import com.qks.common.vo.ResponseVO;
+import com.qks.common.vo.UserJobRelationVO;
+import com.qks.openfeign.service.JobClient;
+import feign.hystrix.FallbackFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @ClassName Dessert
@@ -12,5 +20,61 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-public class JobBackImpl {
+public class JobBackImpl implements FallbackFactory<JobClient> {
+
+    @Override
+    public JobClient create(Throwable throwable) {
+        return new JobClient() {
+
+            @Override
+            public ResponseVO<List<String>> getJobs() {
+                return null;
+            }
+
+            @Override
+            public ResponseVO<List<String>> getAllJobDoctorTarget() {
+                return null;
+            }
+
+            @Override
+            public List<UserJobRelationVO> getUserJobXML(String type) {
+                return null;
+            }
+
+            @Override
+            public ResponseVO<UserJobRelations> getUserJob(Integer userId, Integer jobId) {
+                return null;
+            }
+
+            @Override
+            public ResponseVO<Integer> deleteUserJob(Integer id) {
+                return null;
+            }
+
+            @Override
+            public ResponseVO<List<UserJobRelations>> getUserJobs(Integer id, Integer[] allys) {
+                return null;
+            }
+
+            @Override
+            public ResponseVO<Job> getJob(Integer jobId) {
+                return null;
+            }
+
+            @Override
+            public ResponseVO<UserJobRelations> getUserJobByUserId(Integer userId) {
+                return null;
+            }
+
+            @Override
+            public ResponseVO<UserJobRelations> getUserJobById(Integer id) {
+                return null;
+            }
+
+            @Override
+            public ResponseVO<Integer> updateUserJobStatus(Integer id, Integer status) {
+                return null;
+            }
+        };
+    }
 }

@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * @ClassName Dessert
+ * @ClassName MinioUtils
  * @Description
  * @Author QKS
  * @Version v1.0

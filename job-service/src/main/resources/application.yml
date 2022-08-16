@@ -13,7 +13,7 @@ spring:
       server-addr: 42.193.247.89:8848
     sentinel:
       transport:
-        dashboard: 42.193.247.89:8080 # sentinel的dashboard地址
+        dashboard: 42.193.247.89:8858 # sentinel的dashboard地址
 mybatis:
   type-aliases-package: com.qks.common.po
   configuration:

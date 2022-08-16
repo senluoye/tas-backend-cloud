@@ -1,6 +1,8 @@
 package com.qks.openfeign.service.backimpl;
 
+import com.qks.common.exception.ServiceException;
 import com.qks.common.po.Job;
+import com.qks.common.po.User;
 import com.qks.common.po.UserJobRelations;
 import com.qks.common.utils.Response;
 import com.qks.common.vo.ResponseVO;
@@ -63,8 +65,8 @@ public class JobBackImpl implements FallbackFactory<JobClient> {
             }
 
             @Override
-            public ResponseVO<UserJobRelations> getUserJobByUserId(Integer userId) {
-                return Response.success(null);
+            public ResponseVO<UserJobRelations> getUserJobByUserId(Integer userId) throws ServiceException {
+                throw new ServiceException("操作速度过快");
             }
 
             @Override

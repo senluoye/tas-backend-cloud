@@ -1,4 +1,4 @@
-package com.qks.task.confg;
+package com.qks.task.config;
 
 import io.minio.MinioClient;
 import lombok.Data;

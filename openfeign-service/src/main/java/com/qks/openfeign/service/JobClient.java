@@ -1,5 +1,6 @@
 package com.qks.openfeign.service;
 
+import com.qks.common.exception.ServiceException;
 import com.qks.common.po.Job;
 import com.qks.common.po.UserJobRelations;
 import com.qks.common.utils.Response;
@@ -49,7 +50,7 @@ public interface JobClient {
     ResponseVO<Job> getJob(Integer jobId);
 
     @PostMapping("/api/job/teachers/target/userId")
-    ResponseVO<UserJobRelations> getUserJobByUserId(Integer userId);
+    ResponseVO<UserJobRelations> getUserJobByUserId(Integer userId) throws ServiceException;
 
     @PostMapping("/api/job/teachers/target/id")
     ResponseVO<UserJobRelations> getUserJobById(Integer id);

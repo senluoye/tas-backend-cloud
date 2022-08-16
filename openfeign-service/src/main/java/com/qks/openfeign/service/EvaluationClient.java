@@ -3,6 +3,7 @@ package com.qks.openfeign.service;
 import com.qks.common.po.Evaluation;
 import com.qks.common.utils.Response;
 import com.qks.common.vo.ResponseVO;
+import com.qks.openfeign.config.MyFeignRequestInterceptor;
 import com.qks.openfeign.service.backimpl.JobBackImpl;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -21,7 +22,7 @@ import java.util.List;
  * @Version v1.0
  * @Create 2022-08-08 15:09
  */
-@FeignClient(value = "evaluationservice", fallbackFactory = JobBackImpl.class)
+@FeignClient(value = "evaluationservice", fallbackFactory = JobBackImpl.class, configuration = MyFeignRequestInterceptor.class)
 public interface EvaluationClient {
     @DeleteMapping("/api/evaluation")
     Integer deleteEvaluation(Integer userId);

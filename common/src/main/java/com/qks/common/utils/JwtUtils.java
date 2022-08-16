@@ -32,12 +32,6 @@ public class JwtUtils {
                 .compact();
     }
 
-    public static String createToken(Integer userId) {
-        Map<String, Object> user = new HashMap<>();
-        user.put("userId", userId);
-        return createToken(user);
-    }
-
     public static Boolean verify(String token) {
         try {
             Jwts.parserBuilder()

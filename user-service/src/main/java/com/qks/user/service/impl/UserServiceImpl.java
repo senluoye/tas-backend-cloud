@@ -56,20 +56,26 @@ public class UserServiceImpl implements UserService {
             throw new ServiceException("用户名或密码错误");
         }
 
-        return Response.successMap(JwtUtils.createToken(user.getId()));
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("userId", userData.getId());
+
+        return Response.successMap(JwtUtils.createToken(userMap));
     }
 
     @Override
     public ResponseVO<UserInfo> userInfo(Integer userId) throws ServiceException {
-        User user = userMapper.getUserById(userId);
+        UserDTO user = userMapper.getUserById(userId);
         if (user == null) {
             throw new ServiceException("用户信息不存在");
         }
 
         List<Role> roles = userMapper.getRolesByStatus(userId);
-        UserJobRelations relations = userMapper.getUserJobRelations(userId);
+        UserJobRelations relations = jobClient.getUserJobByUserId(userId).getData();
+        System.out.println(relations);
         List<Job> jobs = new ArrayList<>();
-        jobs.add(userMapper.getJobByStatus(relations.getJobId()));
+        if (relations != null) {
+            jobs.add(userMapper.getJobByStatus(relations.getJobId()));
+        }
 
         return Response.success(UserInfo.builder()
                 .id(user.getId())

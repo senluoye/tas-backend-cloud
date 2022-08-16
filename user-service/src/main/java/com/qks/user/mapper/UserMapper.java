@@ -20,15 +20,15 @@ public interface UserMapper {
     UserDTO getUserByStatus(@Param("loginName") String loginName, @Param("password") String password);
 
     @Select("select * from users where id = #{userId} limit 1")
-    User getUserById(Integer userId);
+    UserDTO getUserById(Integer userId);
     
     @Select("select * from users where login_name = #{loginName} limit 1")
     User getUserByLoginName(String loginName);
 
     @Select("select * " +
             "from roles " +
-            "where roles.id = (" +
-            "   select * " +
+            "where roles.id in (" +
+            "   select user_role_relations.role_id " +
             "   from user_role_relations " +
             "   where user_id = #{userId}" +
             ")")

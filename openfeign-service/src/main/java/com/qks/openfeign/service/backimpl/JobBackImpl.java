@@ -2,6 +2,7 @@ package com.qks.openfeign.service.backimpl;
 
 import com.qks.common.po.Job;
 import com.qks.common.po.UserJobRelations;
+import com.qks.common.utils.Response;
 import com.qks.common.vo.ResponseVO;
 import com.qks.common.vo.UserJobRelationVO;
 import com.qks.openfeign.service.JobClient;
@@ -63,7 +64,7 @@ public class JobBackImpl implements FallbackFactory<JobClient> {
 
             @Override
             public ResponseVO<UserJobRelations> getUserJobByUserId(Integer userId) {
-                return null;
+                return Response.success(null);
             }
 
             @Override

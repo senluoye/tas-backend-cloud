@@ -27,14 +27,20 @@ spring:
           uri: lb://evaluationservice
           predicates:
             - Path=/api/evaluation/**
+          filters:
+            - AddRequestHeader=flag, flag
         - id: job-service
           uri: lb://jobservice
           predicates:
             - Path=/api/job/**
+          filters:
+            - AddRequestHeader=flag, flag
         - id: task-service
           uri: lb://taskservice
           predicates:
             - Path=/api/task/**
+          filters:
+            - AddRequestHeader=flag, flag
       globalcors: # 全局的跨域处理
         add-to-simple-url-handler-mapping: true # 解决options请求被拦截问题
         corsConfigurations:

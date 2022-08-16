@@ -39,6 +39,7 @@ public class GlobalExceptionHandler {
         logger.info("最新的请求: " + df.format(new Date()));
         logger.info(req.getRequestURI());
         logger.info(String.valueOf(e));
+        e.printStackTrace();
 
         return Response.error(-1, e.getMessage());
     }

@@ -1,20 +1,7 @@
 server:
   port: 10010 # 网关端口
 spring:
-  application:
-    name: gatewayservice
-  datasource:
-    url: jdbc:mysql://42.193.247.89:3306/tas?useSSL=false
-    username: tas
-    password: GMbWEia63cc7jXCH
-    driver-class-name: com.mysql.cj.jdbc.Driver
   cloud:
-    nacos:
-      discovery:
-        server-addr: 42.193.247.89:8848
-      sentinel:
-        transport:
-          dashboard: 42.193.247.89:8858
     gateway:
       routes:
         - id: user-service

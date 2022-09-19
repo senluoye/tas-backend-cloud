@@ -41,7 +41,7 @@ public class UserUtils {
      * @param token
      * @return
      */
-    public boolean checkLogin(String nowToken) throws ServiceException {
+    public boolean checkLogin(String nowToken) {
         Integer userId;
         try {
             userId = Integer.valueOf(JwtUtils.parser(nowToken).get("userId").toString());

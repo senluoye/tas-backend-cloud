@@ -20,7 +20,8 @@ import java.util.Map;
  */
 public interface UserService {
     ResponseVO<Map<String, Object>> userLogin(UserDTO user) throws ServiceException;
-    ResponseVO<UserInfo> userInfo(Integer userId) throws ServiceException;
+
+    ResponseVO<UserInfo> userInfo(String token) throws ServiceException;
 
     ResponseVO<Map<String, Object>> addUserRole(UserRoleRelations relations, String token) throws ServiceException;
 
@@ -34,13 +35,13 @@ public interface UserService {
 
     ResponseVO<Map<String, Object>> addUser(String token, User user) throws ServiceException;
 
-    ResponseVO<List<String>> getAllDepartment(String token);
+    ResponseVO<List<String>> getAllDepartment(String token) throws ServiceException;
 
     ResponseVO<Map<String, Object>> modifyPassword(String token, User user) throws ServiceException;
 
-    ResponseVO<List<String>> getAllJobPositionTarget(String token);
+    ResponseVO<List<String>> getAllJobPositionTarget(String token) throws ServiceException;
 
-    ResponseVO<List<String>> getAllJobDoctorTarget(String token);
+    ResponseVO<List<String>> getAllJobDoctorTarget(String token) throws ServiceException;
 
     ResponseVO<Integer> userRegister(UserDTO user) throws ServiceException;
 }

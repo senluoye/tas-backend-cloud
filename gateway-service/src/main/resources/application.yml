@@ -14,7 +14,7 @@ spring:
         server-addr: 42.193.247.89:8848
       sentinel:
         transport:
-          dashboard: 42.193.247.89:8080
+          dashboard: 42.193.247.89:8858
     gateway:
       routes:
         - id: user-service

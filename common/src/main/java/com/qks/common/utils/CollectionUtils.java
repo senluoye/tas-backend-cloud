@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 /**
  * @ClassName Dessert
- * @Description
+ * @Description 集合工具类
  * @Author QKS
  * @Version v1.0
  * @Create 2022-08-09 15:15

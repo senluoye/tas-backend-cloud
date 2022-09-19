@@ -32,6 +32,7 @@ public class UserController {
 
     /**
      * 用户登陆
+     *
      * @param user
      * @return
      * @throws ServiceException
@@ -48,17 +49,18 @@ public class UserController {
 
     /**
      * 获取用户信息
+     *
      * @return
      * @throws ServiceException
      */
     @GetMapping("/info")
     public ResponseVO<UserInfo> userInfo(@RequestHeader("token") String token) throws ServiceException {
-        Integer userId = Integer.valueOf(JwtUtils.parser(token).get("userId").toString());
-        return userService.userInfo(userId);
+        return userService.userInfo(token);
     }
 
     /**
      * 给予用户角色
+     *
      * @param user
      * @return
      * @throws ServiceException
@@ -71,6 +73,7 @@ public class UserController {
 
     /**
      * 移除用户角色
+     *
      * @param relations
      * @param token
      * @return
@@ -84,6 +87,7 @@ public class UserController {
 
     /**
      * 修改用户信息
+     *
      * @param token
      * @param user
      * @return
@@ -97,6 +101,7 @@ public class UserController {
 
     /**
      * 获取所有账号
+     *
      * @param token
      * @param user
      * @return
@@ -110,6 +115,7 @@ public class UserController {
 
     /**
      * 删除账号
+     *
      * @param token
      * @param user
      * @return
@@ -117,12 +123,13 @@ public class UserController {
      */
     @PostMapping("/delete-user")
     public ResponseVO<Map<String, Object>> deleteUser(@RequestHeader("token") String token,
-                                                     @RequestBody User user) throws ServiceException {
+                                                      @RequestBody User user) throws ServiceException {
         return userService.deleteUser(token, user);
     }
 
     /**
      * 增加用户
+     *
      * @param user
      * @param token
      * @return
@@ -136,6 +143,7 @@ public class UserController {
 
     /**
      * 一键修改用户密码
+     *
      * @param token
      * @param user
      * @return
@@ -149,6 +157,7 @@ public class UserController {
 
     /**
      * 获取所有部门
+     *
      * @param token
      * @return
      * @throws ServiceException
@@ -160,6 +169,7 @@ public class UserController {
 
     /**
      * 获取所有岗位类型
+     *
      * @param token
      * @return
      * @throws ServiceException
@@ -171,6 +181,7 @@ public class UserController {
 
     /**
      * 获取所有人员类型
+     *
      * @param token
      * @return
      * @throws ServiceException

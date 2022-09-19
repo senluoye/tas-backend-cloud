@@ -66,6 +66,7 @@ public class JobBackImpl implements FallbackFactory<JobClient> {
 
             @Override
             public ResponseVO<UserJobRelations> getUserJobByUserId(Integer userId) throws ServiceException {
+                log.error("查询用户异常");
                 throw new ServiceException("操作速度过快");
             }
 

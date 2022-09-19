@@ -10,8 +10,6 @@ spring:
       ribbon:
         enabled: true
 feign:
-  hystrix:
-    enabled: true
   httpclient:
     enabled: true # 开启feign对HttpClient的支持
     max-connections: 200 # 最大的连接数

@@ -1,26 +1,7 @@
 server:
   port: 8092
-spring:
-  application:
-    name: jobservice
-  datasource:
-    url: jdbc:mysql://42.193.247.89:3306/tas?useSSL=false
-    username: tas
-    password: GMbWEia63cc7jXCH
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  cloud:
-    nacos:
-      server-addr: 42.193.247.89:8848
-    sentinel:
-      transport:
-        dashboard: 42.193.247.89:8858 # sentinel的dashboard地址
 mybatis:
   type-aliases-package: com.qks.common.po
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*xml
-logging:
-  level:
-    com.qks: debug
-  pattern:
-    dateformat: MM-dd HH:mm:ss:SSS

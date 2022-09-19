@@ -67,9 +67,7 @@ public class UserServiceImpl implements UserService {
         userMap.put("userId", userData.getId());
 
         String token = JwtUtils.createToken(userMap);
-        if (jedis.get(userData.getId().toString()) != null) {
-            jedis.set(userData.getId().toString(), token);
-        }
+        jedis.set(userData.getId().toString(), token);
         return Response.successMap(token);
     }
 

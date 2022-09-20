@@ -1,5 +1,8 @@
 package com.qks.common.po;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +23,13 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class Model {
     private Integer id;
+
+    @TableField(fill = FieldFill.INSERT)
     private Timestamp createAt;
+
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Timestamp updateAt;
+
+    @TableLogic
     private Timestamp deleteAt;
 }

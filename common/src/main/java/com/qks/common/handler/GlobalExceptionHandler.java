@@ -1,5 +1,6 @@
 package com.qks.common.handler;
 
+import com.netflix.client.ClientException;
 import com.qks.common.exception.LoginException;
 import com.qks.common.exception.ServiceException;
 import com.qks.common.utils.Response;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.naming.ServiceUnavailableException;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,6 +30,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 自定义异常
+     *
      * @param req
      * @param e
      * @return
@@ -36,9 +39,9 @@ public class GlobalExceptionHandler {
     @ResponseBody
     private ResponseVO<Map<String, Object>> serviceExceptionHandler(HttpServletRequest req, Exception e) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
-        logger.info("最新的请求: " + df.format(new Date()));
-        logger.info(req.getRequestURI());
-        logger.info(String.valueOf(e));
+        logger.error("最新的请求: " + df.format(new Date()));
+        logger.error(req.getRequestURI());
+        logger.error(String.valueOf(e));
         e.printStackTrace();
 
         return Response.error(-1, e.getMessage());
@@ -46,6 +49,7 @@ public class GlobalExceptionHandler {
 
     /**
      * 自定义异常
+     *
      * @param req
      * @param e
      * @return
@@ -54,15 +58,16 @@ public class GlobalExceptionHandler {
     @ResponseBody
     private ResponseVO<Map<String, Object>> loginExceptionHandler(HttpServletRequest req, Exception e) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
-        logger.info("最新的请求: " + df.format(new Date()));
-        logger.info(req.getRequestURI());
-        logger.info(String.valueOf(e));
+        logger.error("最新的请求: " + df.format(new Date()));
+        logger.error(req.getRequestURI());
+        logger.error(String.valueOf(e));
 
         return Response.error(-3, e.getMessage());
     }
 
     /**
      * 空指针异常
+     *
      * @param req
      * @param e
      * @return
@@ -71,15 +76,16 @@ public class GlobalExceptionHandler {
     @ResponseBody
     private ResponseVO<Map<String, Object>> nullPointerExceptionHandler(HttpServletRequest req, Exception e) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-d:HH:mm:ss");
-        logger.info("最新的请求: " + df.format(new Date()));
-        logger.info(req.getRequestURI());
-        logger.info(String.valueOf(e));
+        logger.error("最新的请求: " + df.format(new Date()));
+        logger.error(req.getRequestURI());
+        logger.error(String.valueOf(e));
 
         return Response.error(-1, "空指针异常");
     }
 
     /**
      * 其他异常
+     *
      * @param req
      * @param e
      * @return
@@ -88,11 +94,22 @@ public class GlobalExceptionHandler {
     @ResponseBody
     private ResponseVO<Map<String, Object>> exceptionHandler(HttpServletRequest req, Exception e) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
-        logger.info("最新的请求: " + df.format(new Date()));
-        logger.info(req.getRequestURI());
-        logger.info(String.valueOf(e));
+        logger.error("最新的请求: " + df.format(new Date()));
+        logger.error(req.getRequestURI());
+        logger.error(String.valueOf(e));
 
         return Response.error(-1, e.getMessage());
+    }
+
+    @ExceptionHandler(value = ClientException.class)
+    @ResponseBody
+    private ResponseVO<Map<String, Object>> clientExceptionHandler(HttpServletRequest request, Exception e) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd:HH:mm:ss");
+        logger.error("最新的请求: " + df.format(new Date()));
+        logger.error(request.getRequestURI());
+        logger.error(String.valueOf(e));
+
+        return Response.error(-1, "服务出现异常");
     }
 }
 

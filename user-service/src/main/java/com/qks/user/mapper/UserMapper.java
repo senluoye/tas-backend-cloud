@@ -1,5 +1,6 @@
 package com.qks.user.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.qks.common.dto.user.UserDTO;
 import com.qks.common.po.*;
 import org.apache.ibatis.annotations.*;
@@ -15,14 +16,14 @@ import java.util.List;
  * @Create 2022-08-05 18:48
  */
 @Mapper
-public interface UserMapper {
-    @Select("select * from users where login_name = #{loginName} and password = #{password}")
+public interface UserMapper extends BaseMapper<User> {
+    @Select("select * from user where login_name = #{loginName} and password = #{password}")
     UserDTO getUserByStatus(@Param("loginName") String loginName, @Param("password") String password);
 
-    @Select("select * from users where id = #{userId} limit 1")
+    @Select("select * from user where id = #{userId} limit 1")
     UserDTO getUserById(Integer userId);
-    
-    @Select("select * from users where login_name = #{loginName} limit 1")
+
+    @Select("select * from user where login_name = #{loginName} limit 1")
     User getUserByLoginName(String loginName);
 
     @Select("select * " +
@@ -53,12 +54,12 @@ public interface UserMapper {
     @Delete("delete from user_role_relations where role_id = #{roleId} and user_id = #{userId}")
     int deleteUserRole(UserRoleRelations relations);
 
-    @Update("update users set login_name = #{loginName}, password = #{password}, " +
+    @Update("update user set login_name = #{loginName}, password = #{password}, " +
             "name = #{name}, email = #{email}, phone = #{phone}, department = #{department} " +
             "where id = #{id}")
     int updateUser(User user);
 
-    @Select("select * from users")
+    @Select("select * from user")
     List<User> getUsers();
 
     @Select("select * from roles where id >= #{roleId}")
@@ -74,21 +75,21 @@ public interface UserMapper {
     @Delete("delete from user_job_relations where user_id = #{userId}")
     void deleteUserRoleByUserId(Integer id);
 
-    @Delete("delete from users where id = #{id}")
+    @Delete("delete from user where id = #{id}")
     Integer deleteUser(Integer id);
 
-    @Insert("insert into users (login_name, password, name, email, phone, department) VALUES " +
+    @Insert("insert into user (login_name, password, name, email, phone, department) VALUES " +
             "(#{loginName}, #{password}, #{name}, #{email}, #{phone}, #{department})")
     Integer addUsers(User user);
 
 
-    @Select("select distinct department from users")
+    @Select("select distinct department from user")
     List<String> getDepartments();
 
-    @Update("update users set password = #{password} where login_name = #{loginName}")
+    @Update("update user set password = #{password} where login_name = #{loginName}")
     int resetUserPassword(String loginName, String password);
 
-    @Insert("insert into users set login_name = #{loginName}, password = #{password}, " +
+    @Insert("insert into user set login_name = #{loginName}, password = #{password}, " +
             "name = #{name}, email = #{email}, phone = #{phone}, department = #{department}")
     int addUser(UserDTO userDTO);
 }

@@ -10,14 +10,13 @@ import com.qks.common.vo.ResponseVO;
 import com.qks.common.vo.UserInfo;
 import com.qks.openfeign.service.EvaluationClient;
 import com.qks.openfeign.service.JobClient;
+import com.qks.user.handler.UserConverter;
 import com.qks.user.mapper.UserMapper;
 import com.qks.user.mapper.UserMapperXML;
 import com.qks.user.service.UserService;
 import com.qks.user.utils.UserUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.Jedis;
 
 import javax.annotation.Resource;
@@ -31,6 +30,7 @@ import java.util.*;
  * @Create 2022-08-05 18:46
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
 
     @Resource
@@ -73,7 +73,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseVO<UserInfo> userInfo(String token) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         Integer userId = Integer.valueOf(JwtUtils.parser(token).get("userId").toString());
         UserDTO user = userMapper.getUserById(userId);
@@ -103,7 +105,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseVO<Map<String, Object>> addUserRole(UserRoleRelations relations, String token) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         if (relations.getUserId() == 0 || relations.getRoleId() == 0) {
             throw new ServiceException("用户id或角色id不能为空");
@@ -123,7 +127,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseVO<Map<String, Object>> removeUserRole(UserRoleRelations relations, String token) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         if (relations.getRoleId() == 0 || relations.getUserId() == 0) {
             throw new ServiceException("数据不能为空");
@@ -143,7 +149,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseVO<Map<String, Object>> modifyUserInfo(String token, User user) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         if (Objects.equals(user.getLoginName(), "") || Objects.equals(user.getPassword(), "")) {
             throw new ServiceException("数据不能为空");
@@ -178,7 +186,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseVO<List<UserInfo>> getAllUserInfo(String token, User user) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         Integer userId = Integer.valueOf(JwtUtils.parser(token).get("userId").toString());
         UserRoleRelations relations = userMapper.getUserRole(userId);
@@ -189,7 +199,7 @@ public class UserServiceImpl implements UserService {
         if ("".equals(user.getLoginName()) && "".equals(user.getName())) {
             users = userMapper.getUsers();
         } else {
-            User tempDa = User.builder().build();
+//            User tempDa = User.builder().build();
             users = userMapperXML.getUsersByXML(user.getLoginName(), user.getName());
         }
 
@@ -211,7 +221,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseVO<Map<String, Object>> deleteUser(String token, User user) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         Integer userId = Integer.valueOf(JwtUtils.parser(token).get("userId").toString());
         UserRoleRelations currentUserRole = userMapper.getUserRole(userId);
@@ -240,7 +252,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseVO<Map<String, Object>> addUser(String token, User user) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         Integer userId = Integer.valueOf(JwtUtils.parser(token).get("userId").toString());
         if (!utils.isAdminOrLeadership(userId)) {
@@ -271,14 +285,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseVO<List<String>> getAllDepartment(String token) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         return Response.success(userMapper.getDepartments());
     }
 
     @Override
     public ResponseVO<Map<String, Object>> modifyPassword(String token, User user) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         Integer userId = Integer.valueOf(JwtUtils.parser(token).get("userId").toString());
         if (!utils.isAdminOrLeadership(userId)) {
@@ -300,14 +318,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseVO<List<String>> getAllJobPositionTarget(String token) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         return jobClient.getJobs();
     }
 
     @Override
     public ResponseVO<List<String>> getAllJobDoctorTarget(String token) throws ServiceException {
-        if (!utils.checkLogin(token)) throw new ServiceException("登陆过期");
+        if (!utils.checkLogin(token)) {
+            throw new ServiceException("登陆过期");
+        }
 
         return jobClient.getAllJobDoctorTarget();
     }
@@ -325,13 +347,10 @@ public class UserServiceImpl implements UserService {
         }
 
         userDTO.setPassword(ComputeUtil.encrypt(userDTO.getPassword()));
-        if (userMapper.addUser(userDTO) < 1) {
+        if (userMapper.insert(UserConverter.converterToUser(userDTO)) < 1) {
             throw new ServiceException("注册失败");
         }
         return Response.success(userDTO.getId());
     }
 
-    public ResponseVO<Boolean> IsAdminOrLeadership(Integer userId) {
-        return Response.success(utils.isAdminOrLeadership(userId));
-    }
 }

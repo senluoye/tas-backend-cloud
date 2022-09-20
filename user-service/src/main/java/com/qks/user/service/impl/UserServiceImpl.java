@@ -1,5 +1,7 @@
 package com.qks.user.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.qks.common.dto.user.UserDTO;
 import com.qks.common.exception.ServiceException;
 import com.qks.common.po.*;
@@ -58,7 +60,12 @@ public class UserServiceImpl implements UserService {
         if ("".equals(loginName) || "".equals(password)) {
             throw new ServiceException("用户名或密码不能为空");
         }
-        UserDTO userData = userMapper.getUserByStatus(loginName, password);
+
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("login_name", loginName)
+                .eq("password", password);
+
+        User userData = userMapper.selectOne(wrapper);
         if (userData == null || userData.getId() == 0) {
             throw new ServiceException("用户名或密码错误");
         }
@@ -85,7 +92,6 @@ public class UserServiceImpl implements UserService {
 
         List<Role> roles = userMapper.getRolesByStatus(userId);
         UserJobRelations relations = jobClient.getUserJobByUserId(userId).getData();
-        System.out.println(relations);
         List<Job> jobs = new ArrayList<>();
         if (relations != null) {
             jobs.add(userMapper.getJobByStatus(relations.getJobId()));
